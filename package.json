@@ -1,0 +1,44 @@
+{
+  "name": "express-jwt-acl-mongoose-starter",
+  "version": "0.0.1",
+  "description": "Express & Mongoose starter kit written in ES6 for NodeJS.",
+  "main": "src/server.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/patrickvaler/express-jwt-acl-mongoose-starter.git"
+  },
+  "author": "DatenTyp <fokker@chartier.online>",
+  "license": "MIT",
+  "dependencies": {
+    "acl": "^0.4.11",
+    "bcrypt": "^3.0.2",
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "jsonwebtoken": "^8.4.0",
+    "mongoose": "^5.4.0",
+    "morgan": "^1.9.1",
+    "passport": "^0.4.0",
+    "passport-jwt": "^4.0.0",
+    "q": "^1.5.1"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-eslint": "^8.2.6",
+    "babel-preset-node6": "^11.0.0",
+    "chai": "^4.2.0",
+    "chai-http": "^4.2.0",
+    "eslint": "^5.3.0",
+    "eslint-config-airbnb-base": "^13.0.0",
+    "eslint-plugin-import": "^2.2.0",
+    "mocha": "^5.2.0",
+    "mockgoose": "^7.3.1",
+    "nodemon": "^1.18.0"
+  },
+  "scripts": {
+    "serve": "NODE_ENV=dev nodemon src/server.js --exec \"npm run lint -s && babel-node\"",
+    "build": "NODE_ENV=prod babel src --out-dir build",
+    "lint": "./node_modules/.bin/eslint src",
+    "lint:fix": "./node_modules/.bin/eslint src --fix",
+    "test": "NODE_ENV=test mocha --timeout 30000 --compilers js:babel-register"
+  }
+}
