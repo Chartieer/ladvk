@@ -20,9 +20,12 @@ const defaultConfig = {
  */
 const envConfig = {
   prod: {},
-  dev: {},
+  dev: {
+    apiPort: 3000
+  },
   test: {
-    apiPort: 3100
+    db: 'mongodb://localhost:27017/express-jwt-acl-mongoose-starter',
+    apiPort: 3001
   }
 };
 

@@ -15,6 +15,10 @@ export default app => {
     res.json({ version: packageJson.version });
   });
 
+  app.get('/hello', (req, res) => {
+    res.status(200).json({ version: 'asdfdf' });
+  });
+
   app.use(API, authApi());
 
   /**

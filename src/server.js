@@ -7,6 +7,7 @@ import auth from './config/auth';
 import routesConfig from './config/routes';
 import aclConfig from './config/acl';
 
+
 const app = express();
 
 app.use(morgan('dev'));
@@ -14,8 +15,9 @@ app.use(morgan('dev'));
 // initialize express
 expressConfig(app);
 
-app.use(auth.initialize());
+// app.use(auth.initialize());
 auth.setJwtStrategy();
+
 
 mongoose.connect(
   config.db,
@@ -29,7 +31,11 @@ mongoose.connect(
   }
 );
 
-app.listen(config.apiPort, () => {
+app.get('/', (req, res) => {
+  res.status(200).json('Hello Welt');
+});
+
+const server = app.listen(config.apiPort, () => {
   console.log(`[Server] listening on port ${config.apiPort}`);
 });
 
@@ -40,4 +46,5 @@ function authorizationSetup() {
   routesConfig(app);
 }
 
-export default app;
+
+module.exports = server;
