@@ -9,6 +9,7 @@ module.exports = [
     password: '$2a$05$2KOSBnbb0r.0TmMrvefbluTOB735rF/KRZb4pmda4PdvU9iDvUB26',
     role: 'admin',
     verified: true,
+    friends: [],
     urlTwitter: faker.internet.url(),
     urlGitHub: faker.internet.url(),
     createdAt: faker.date.past(),
