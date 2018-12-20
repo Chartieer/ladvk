@@ -52,8 +52,10 @@ exports.updateItem = [
     .not()
     .isEmpty()
     .withMessage('IS_EMPTY'),
-  check('friends'),
-  check('city'),
+  check('friends').optional(),
+  check('city')
+    .optional()
+    .isString(),
   check('email')
     .exists()
     .withMessage('MISSING')
