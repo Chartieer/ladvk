@@ -1,51 +1,81 @@
 {
-  "name": "express-jwt-acl-mongoose-starter",
-  "version": "0.0.1",
-  "description": "Express & Mongoose starter kit written in ES6 for NodeJS.",
-  "main": "src/server.js",
+  "name": "node-express-mongodb-jwt-rest-api-skeleton",
+  "version": "1.2.2",
+  "description": "Node.js express.js MongoDB JWT REST API - Basic Project Skeleton. Great for building an MVP for your front-end app (Vue, react, angular, or anything that can consume an API)",
+  "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/patrickvaler/express-jwt-acl-mongoose-starter.git"
-  },
-  "author": "DatenTyp <fokker@chartier.online>",
-  "license": "MIT",
-  "dependencies": {
-    "acl": "^0.4.11",
-    "bcrypt": "^3.0.2",
-    "body-parser": "^1.18.3",
-    "express": "^4.16.4",
-    "jsonwebtoken": "^8.4.0",
-    "mongoose": "^5.4.0",
-    "morgan": "^1.9.1",
-    "passport": "^0.4.0",
-    "passport-jwt": "^4.0.0",
-    "q": "^1.5.1"
-  },
-  "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-eslint": "^8.2.6",
-    "babel-preset-node6": "^11.0.0",
-    "dotenv": "^6.2.0",
-    "eslint": "^5.3.0",
-    "eslint-config-airbnb-base": "^13.0.0",
-    "eslint-plugin-import": "^2.2.0",
-    "jest": "^23.6.0",
-    "mocha": "^5.2.0",
-    "nodemon": "^1.18.0",
-    "supertest": "^3.3.0"
+    "url": "https://github.com/davellanedam/node-express-mongodb-jwt-rest-api-skeleton.git"
   },
   "scripts": {
-    "serve": "NODE_ENV=dev nodemon src/server.js --exec \"npm run lint -s && babel-node\"",
-    "build": "NODE_ENV=prod babel src --out-dir build",
-    "lint": "./node_modules/.bin/eslint src",
-    "lint:fix": "./node_modules/.bin/eslint src --fix",
-    "test": "jest --watch",
-    "teste": "NODE_ENV=test mocha 'test/apiTest.js' --compilers js:babel-register --watch"
+    "start": "NODE_ENV=production pm2 start server.js --watch",
+    "test": "mocha --timeout=5000",
+    "dev": "NODE_ENV=development nodemon server.js",
+    "fresh": "npm run clean && npm run seed",
+    "clean": "node clean.js",
+    "seed": "node seed.js",
+    "format": "prettier --write --config .prettierrc.json \"**/*.js\""
   },
-
-  "jest": {
-    "testEnvironment": "node",
-    "testPathIgnorePatterns" : ["<rootDir>/node_modules/", "<rootDir>/frontend/" ]
-
-  }
+  "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
+    "body-parser": "^1.18.3",
+    "compression": "^1.7.3",
+    "cors": "^2.8.5",
+    "date-fns": "^1.29.0",
+    "dotenv-safe": "^6.1.0",
+    "expeditious-engine-redis": "^0.1.1",
+    "express": "^4.16.4",
+    "express-expeditious": "^4.0.0",
+    "express-validator": "^5.3.0",
+    "helmet": "^3.15.0",
+    "jsonwebtoken": "^8.4.0",
+    "mongoose": "^5.3.10",
+    "mongoose-paginate-v2": "^1.0.12",
+    "morgan": "^1.9.1",
+    "nodemailer": "^4.6.8",
+    "nodemailer-mailgun-transport": "^1.4.0",
+    "passport": "^0.4.0",
+    "passport-jwt": "^4.0.0",
+    "request-ip": "^2.1.3",
+    "trim-request": "^1.0.6",
+    "uuid": "^3.3.2",
+    "validator": "^10.9.0"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "chai-http": "^4.2.0",
+    "eslint": "^5.8.0",
+    "eslint-config-formidable": "^4.0.0",
+    "eslint-config-prettier": "^3.1.0",
+    "eslint-plugin-prettier": "^3.0.0",
+    "faker": "^4.1.0",
+    "mocha": "^5.2.0",
+    "mongo-seeding": "^3.0.0",
+    "prettier": "^1.15.1",
+    "prettier-eslint": "^8.8.2"
+  },
+  "keywords": [
+    "javascript",
+    "api",
+    "node",
+    "express",
+    "mongosdb",
+    "jwt",
+    "postman",
+    "jwt-authentication",
+    "token",
+    "eslint",
+    "mongoose",
+    "rest",
+    "skeleton",
+    "async",
+    "await",
+    "mvp",
+    "front-end",
+    "testing",
+    "prettier",
+    "mocha",
+    "chai",
+    "redis"
+  ]
 }
