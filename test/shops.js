@@ -1,7 +1,6 @@
 /* eslint handle-callback-err: "off"*/
 
 process.env.NODE_ENV = 'test'
-
 const Shop = require('../app/models/shop')
 const faker = require('faker')
 const chai = require('chai')
