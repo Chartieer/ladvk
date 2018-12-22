@@ -1,5 +1,5 @@
-const controller = require('../controllers/users')
-const validate = require('../controllers/users.validate')
+const controller = require('../controllers/posts')
+const validate = require('../controllers/cities.validate')
 const AuthController = require('../controllers/auth')
 const express = require('express')
 const router = express.Router()
@@ -14,6 +14,7 @@ const trimRequest = require('trim-request')
  ROUTES
 */
 
+router.get('/all', controller.getAllItems)
 router.get(
   '/',
   requireAuth,

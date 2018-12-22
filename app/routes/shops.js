@@ -1,5 +1,6 @@
-const controller = require('../controllers/users')
-const validate = require('../controllers/users.validate')
+const controller = require('../controllers/shops')
+const validate = require('../controllers/shops.validate')
+
 const AuthController = require('../controllers/auth')
 const express = require('express')
 const router = express.Router()
@@ -13,7 +14,7 @@ const trimRequest = require('trim-request')
 /*
  ROUTES
 */
-
+router.get('/all', controller.getAllItems)
 router.get(
   '/',
   requireAuth,
@@ -24,7 +25,7 @@ router.get(
 router.post(
   '/',
   requireAuth,
-  AuthController.roleAuthorization(['admin']),
+  AuthController.roleAuthorization(['admin', 'user']),
   trimRequest.all,
   validate.createItem,
   controller.createItem
