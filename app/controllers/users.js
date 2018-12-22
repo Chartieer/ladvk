@@ -14,21 +14,15 @@ const {
   sendRegistrationEmailMessage
 } = require('./base')
 
+const {
+  _getItemsFromDB,
+  _getItemFromDB,
+  _deleteItemFromDB
+} = require('./helpers')
+
 /*********************
  * Private functions *
  *********************/
-
-const getItemsFromDB = async (req, query) => {
-  const options = await listInitOptions(req)
-  return new Promise((resolve, reject) => {
-    model.paginate(query, options, (err, items) => {
-      if (err) {
-        reject(buildErrObject(422, err.message))
-      }
-      resolve(cleanPaginationID(items))
-    })
-  })
-}
 
 const updateItemInDB = async (id, req) => {
   return new Promise((resolve, reject) => {
@@ -49,22 +43,6 @@ const updateItemInDB = async (id, req) => {
         resolve(item)
       }
     )
-  })
-}
-
-const getItemFromDB = async id => {
-  return new Promise((resolve, reject) => {
-    model
-      .findById(id, (err, item) => {
-        if (err) {
-          reject(buildErrObject(422, err.message))
-        }
-        if (!item) {
-          reject(buildErrObject(404, 'NOT_FOUND'))
-        }
-        resolve(item)
-      })
-      .populate('friends')
   })
 }
 
@@ -92,20 +70,6 @@ const createItemInDB = async req => {
   })
 }
 
-const deleteItemFromDB = async id => {
-  return new Promise((resolve, reject) => {
-    model.findByIdAndRemove(id, (err, item) => {
-      if (err) {
-        reject(buildErrObject(422, err.message))
-      }
-      if (!item) {
-        reject(buildErrObject(404, 'NOT_FOUND'))
-      }
-      resolve(buildSuccObject('DELETED'))
-    })
-  })
-}
-
 /********************
  * Public functions *
  ********************/
@@ -113,7 +77,7 @@ const deleteItemFromDB = async id => {
 exports.getItems = async (req, res) => {
   try {
     const query = await checkQueryString(req.query.filter)
-    res.status(200).json(await getItemsFromDB(req, query))
+    res.status(200).json(await _getItemsFromDB(model, req, query))
   } catch (error) {
     handleError(res, error)
   }
@@ -123,7 +87,7 @@ exports.getItem = async (req, res) => {
   try {
     req = matchedData(req)
     const id = await isIDGood(req.id)
-    res.status(200).json(await getItemFromDB(id))
+    res.status(200).json(await _getItemFromDB(model, id))
   } catch (error) {
     handleError(res, error)
   }
@@ -159,7 +123,7 @@ exports.deleteItem = async (req, res) => {
   try {
     req = matchedData(req)
     const id = await isIDGood(req.id)
-    res.status(200).json(await deleteItemFromDB(id))
+    res.status(200).json(await _deleteItemFromDB(model, id))
   } catch (error) {
     handleError(res, error)
   }

@@ -10,6 +10,14 @@ const {
   checkQueryString
 } = require('./base')
 
+const {
+  _getAllItemsFromDB,
+  _getItemsFromDB,
+  _getItemFromDB,
+  _deleteItemFromDB,
+  _updateItemInDB,
+  _createItemInDB
+} = require('./helpers')
 /*********************
  * Private functions *
  *********************/
@@ -55,105 +63,25 @@ const cityExists = async name => {
   })
 }
 
-const getAllItemsFromDB = async () => {
-  return new Promise((resolve, reject) => {
-    model.find(
-      {},
-      '-updatedAt -createdAt',
-      {
-        sort: {
-          name: 1
-        }
-      },
-      (err, items) => {
-        if (err) {
-          reject(buildErrObject(422, err.message))
-        }
-        resolve(items)
-      }
-    )
-  })
-}
-
-const getItemsFromDB = async (req, query) => {
-  const options = await listInitOptions(req)
-  return new Promise((resolve, reject) => {
-    model.paginate(query, options, (err, items) => {
-      if (err) {
-        reject(buildErrObject(422, err.message))
-      }
-      resolve(cleanPaginationID(items))
-    })
-  })
-}
-
-const getItemFromDB = async id => {
-  return new Promise((resolve, reject) => {
-    model.findById(id, (err, item) => {
-      if (err) {
-        reject(buildErrObject(422, err.message))
-      }
-      if (!item) {
-        reject(buildErrObject(404, 'NOT_FOUND'))
-      }
-      resolve(item)
-    })
-  })
-}
-
-const updateItemInDB = async (id, req) => {
-  return new Promise((resolve, reject) => {
-    model.findByIdAndUpdate(
-      id,
-      req,
-      {
-        new: true
-      },
-      (err, item) => {
-        if (err) {
-          reject(buildErrObject(422, err.message))
-        }
-        if (!item) {
-          reject(buildErrObject(404, 'NOT_FOUND'))
-        }
-        resolve(item)
-      }
-    )
-  })
-}
-
-const createItemInDB = async req => {
-  return new Promise((resolve, reject) => {
-    model.create(req, (err, item) => {
-      if (err) {
-        reject(buildErrObject(422, err.message))
-      }
-      resolve(item)
-    })
-  })
-}
-
-const deleteItemFromDB = async id => {
-  return new Promise((resolve, reject) => {
-    model.findByIdAndRemove(id, (err, item) => {
-      if (err) {
-        reject(buildErrObject(422, err.message))
-      }
-      if (!item) {
-        reject(buildErrObject(404, 'NOT_FOUND'))
-      }
-      resolve(buildSuccObject('DELETED'))
-    })
-  })
-}
-
 /********************
  * Public functions *
  ********************/
 
+exports.createItem = async (req, res) => {
+  try {
+    req = matchedData(req)
+    const doesCityExists = await cityExists(req.name)
+    if (!doesCityExists) {
+      res.status(201).json(await _createItemInDB(model, req))
+    }
+  } catch (error) {
+    handleError(res, error)
+  }
+}
+
 exports.getAllItems = async (req, res) => {
   try {
-    res.status(200).json(await getAllItemsFromDB())
+    res.status(200).json(await _getAllItemsFromDB(model))
   } catch (error) {
     handleError(res, error)
   }
@@ -162,7 +90,7 @@ exports.getAllItems = async (req, res) => {
 exports.getItems = async (req, res) => {
   try {
     const query = await checkQueryString(req.query.filter)
-    res.status(200).json(await getItemsFromDB(req, query))
+    res.status(200).json(await _getItemsFromDB(model, req, query))
   } catch (error) {
     handleError(res, error)
   }
@@ -172,7 +100,7 @@ exports.getItem = async (req, res) => {
   try {
     req = matchedData(req)
     const id = await isIDGood(req.id)
-    res.status(200).json(await getItemFromDB(id))
+    res.status(200).json(await _getItemFromDB(model, id))
   } catch (error) {
     handleError(res, error)
   }
@@ -184,19 +112,7 @@ exports.updateItem = async (req, res) => {
     const id = await isIDGood(req.id)
     const doesCityExists = await cityExistsExcludingItself(id, req.name)
     if (!doesCityExists) {
-      res.status(200).json(await updateItemInDB(id, req))
-    }
-  } catch (error) {
-    handleError(res, error)
-  }
-}
-
-exports.createItem = async (req, res) => {
-  try {
-    req = matchedData(req)
-    const doesCityExists = await cityExists(req.name)
-    if (!doesCityExists) {
-      res.status(201).json(await createItemInDB(req))
+      res.status(200).json(await _updateItemInDB(model, id, req))
     }
   } catch (error) {
     handleError(res, error)
@@ -207,7 +123,7 @@ exports.deleteItem = async (req, res) => {
   try {
     req = matchedData(req)
     const id = await isIDGood(req.id)
-    res.status(200).json(await deleteItemFromDB(id))
+    res.status(200).json(await _deleteItemFromDB(model, id))
   } catch (error) {
     handleError(res, error)
   }
